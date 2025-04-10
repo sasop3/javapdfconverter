@@ -1,3 +1,6 @@
+package code;
+
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,8 +40,8 @@ public class guiframe extends JFrame {
 
 
         add(label);
-        add(button,new BorderLayout().CENTER);
-        add(button2,new BorderLayout().SOUTH);
+        add(button);
+        add(button2);
        
         
 
