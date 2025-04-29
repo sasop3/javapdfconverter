@@ -4,6 +4,9 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -27,6 +30,25 @@ public class guiframe extends JFrame {
     protected static JLabel label;
     guiframe()
     {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(UnsupportedLookAndFeelException e)
+        {
+            try {
+                
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            } catch (Exception r) {
+                System.err.println("Error code 123");
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
         setTitle("Program");
         setSize(400, 200);
         setVisible(true);
@@ -62,7 +84,7 @@ public class guiframe extends JFrame {
                     PDDocument doc = Loader.loadPDF(file);
                     PDFRenderer Prender = new PDFRenderer(doc);
                     BufferedImage image = Prender.renderImage(0); // need to get all the indexes from the pdf pending
-                    ImageIO.write(image, "PNG",new File("nigger"));                    
+                    ImageIO.write(image, "PNG",new File("something"));                    
 
                 } 
                 catch (InvalidPasswordException exception) {
