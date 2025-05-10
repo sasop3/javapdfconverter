@@ -1,4 +1,5 @@
 
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -84,8 +85,8 @@ public class guiframe extends JFrame {
                     PDDocument doc = Loader.loadPDF(file);
                     PDFRenderer Prender = new PDFRenderer(doc);
                     BufferedImage image = Prender.renderImage(0); // need to get all the indexes from the pdf pending
-                    ImageIO.write(image, "PNG",new File("something"));                    
-
+                    ImageIO.write(image, "JPEG",new File("something.jpg"));                    
+                    doc.close();
                 } 
                 catch (InvalidPasswordException exception) {
                     exception.printStackTrace();
@@ -93,6 +94,7 @@ public class guiframe extends JFrame {
                 catch(IOException exception) {
                     exception.printStackTrace();
                 }
+
 
 
             }

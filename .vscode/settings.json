@@ -1,7 +1,7 @@
 {
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "pdfbox-3.0.4.jar"
-    ],
-    "terminal.integrated.cwd": "D:\\dev\\PDFCONVERTERONJAVA"
+        "lib/**/*.jar"
+    ]
 }
