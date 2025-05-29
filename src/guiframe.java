@@ -1,5 +1,4 @@
 
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -82,10 +81,13 @@ public class guiframe extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 
                 try {
-                    PDDocument doc = Loader.loadPDF(file);
+                    PDDocument doc = PDDocument.load(file);
                     PDFRenderer Prender = new PDFRenderer(doc);
-                    BufferedImage image = Prender.renderImage(0); // need to get all the indexes from the pdf pending
-                    ImageIO.write(image, "JPEG",new File("something.jpg"));                    
+                    for (int i = 0; i < doc.getNumberOfPages(); i++) {
+                        BufferedImage image;
+                        image = Prender.renderImage(i); // need to get all the indexes from the pdf pending
+                        ImageIO.write(image, "JPEG",new File(String.format("PageNumber_%d.jpg", i)));                    
+                    }
                     doc.close();
                 } 
                 catch (InvalidPasswordException exception) {
