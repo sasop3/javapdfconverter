@@ -1,6 +1,7 @@
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -9,23 +10,29 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.Format;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
-
 public class guiframe extends JFrame {
-
+    
     protected File file;
     private JFileChooser fileCS;
-    private final JButton button;
-    private final JButton button2;
+    private final JButton filechooserbutton;
+    private final JButton convertbutton;
     protected static JLabel label;
-
+    private JComboBox Formatbox;
+    private String [] formatnames = {"JPEG","PNG","GIF","BMP","TIF"};
+    String FormatType = "JPEG";
     guiframe() {
 
         try {
@@ -42,18 +49,21 @@ public class guiframe extends JFrame {
             e.printStackTrace();
         }
 
-        setTitle("Program");
-        setSize(400, 200);
+        setTitle("PDF TO IMAGE");
+        setSize(246, 382);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new FlowLayout(FlowLayout.CENTER, 30, 30));
+        FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 75, 60);
+        setLayout(layout);
+        layout.setAlignment(FlowLayout.CENTER);
 
         label = new JLabel("null");
+        label.setFont(new Font("comic sans",Font.BOLD, 20));
         label.setForeground(Color.red);
 
-        button = new JButton("Choose File");
-        button.addActionListener(new ActionListener() {
+        filechooserbutton = new JButton("Choose File");
+        filechooserbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileCS = new JFileChooser();
@@ -63,17 +73,37 @@ public class guiframe extends JFrame {
                     file = fileCS.getSelectedFile();
                     label.setText(file.getName());
                 }
+                if(label.getText() != "null") //not sure if this is the best way
+                label.setForeground(Color.BLACK);
+
+                //Make font size change to accomidate different file lengths 
+
+
+
 
             }
         });
 
-        button2 = new JButton("Convert");
-        button2.addActionListener(new ActionListener() {
+        Formatbox = new JComboBox(formatnames);
+        Formatbox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getSource() == Formatbox)
+                FormatType = (String)Formatbox.getSelectedItem();
+            }
+        });
+
+
+        
+
+
+        convertbutton = new JButton("Convert");
+        convertbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 try {
-                    PDDocument doc = PDDocument.load(file);
+                    PDDocument doc = PDDocument.load(file); 
                     PDFRenderer Prender = new PDFRenderer(doc);
                     for (int i = 0; i < doc.getNumberOfPages(); i++) {
                         BufferedImage image;
@@ -87,7 +117,7 @@ public class guiframe extends JFrame {
                             }
                         }
 
-                        ImageIO.write(image, "JPEG", new File(imgFile, String.format("PageNumber_%d.jpg", i)));
+                        ImageIO.write(image,FormatType, new File(imgFile, String.format("PageNumber_%d.%s", i,FormatType.toLowerCase())));
                     }
 
                     doc.close();
@@ -99,10 +129,12 @@ public class guiframe extends JFrame {
                 }
             }
         });
-
-        add(button);
-        add(button2);
+        add(label);
+        add(filechooserbutton);
+        add(Formatbox);
+        add(convertbutton);
 
         revalidate();
     }
+
 }
